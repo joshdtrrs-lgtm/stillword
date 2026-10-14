@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#111714">
+  <title>Stillword — Prayer Journal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#" aria-label="Stillword home">
+        <span class="brand-mark"><span></span><span></span><span></span></span>
+        <span class="brand-name">stillword<span>.</span><small>PERSONAL PRAYER JOURNAL</small></span>
+      </a>
+
+      <div class="sidebar-label">WORKSPACE</div>
+      <nav class="nav-list" aria-label="Main navigation">
+        <button class="nav-item active" data-view="overview"><span class="nav-icon">⌂</span> Overview</button>
+        <button class="nav-item" data-view="journal"><span class="nav-icon">▤</span> My journal</button>
+        <button class="nav-item" data-view="requests"><span class="nav-icon">✳</span> Prayer requests</button>
+        <button class="nav-item" data-view="answered"><span class="nav-icon">✓</span> Answered prayers</button>
+      </nav>
+
+      <div class="sidebar-note">
+        <div class="note-symbol">✦</div>
+        <p class="eyebrow">A GENTLE REMINDER</p>
+        <p>“Be still, and know that I am God.”</p>
+        <span>PSALM 46:10 · KJV</span>
+      </div>
+
+      <div class="sidebar-bottom">
+        <button class="nav-item" id="exportButton"><span class="nav-icon">↧</span> Export my journal</button>
+        <button class="nav-item" id="importButton"><span class="nav-icon">↥</span> Import backup</button>
+        <input type="file" id="importFile" accept=".json,application/json" hidden>
+        <div class="privacy-line"><span class="privacy-dot"></span> Stored on this device</div>
+      </div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <button class="mobile-menu icon-button" id="menuButton" aria-label="Toggle menu">☰</button>
+        <div class="breadcrumb">PERSONAL SPACE <span>/</span> <strong id="breadcrumbPage">OVERVIEW</strong></div>
+        <div class="top-actions">
+          <span class="today-label" id="todayLabel"></span>
+          <button class="icon-button theme-button" id="themeButton" aria-label="Toggle light and dark theme" title="Toggle theme">☼</button>
+          <button class="avatar" id="profileButton" title="Edit your display name">J</button>
+        </div>
+      </header>
+
+      <div class="content-wrap">
+        <section class="view-section active" id="view-overview">
+          <div class="welcome-row">
+            <div>
+              <p class="eyebrow green-text">YOUR QUIET PLACE</p>
+              <h1 id="greeting">Make room for what matters.</h1>
+              <p class="subheading">A little space to pray, reflect, and remember.</p>
+            </div>
+            <button class="primary-button" id="newEntryButton"><span>＋</span> New entry</button>
+          </div>
+
+          <section class="verse-card">
+            <div class="verse-kicker"><span class="verse-icon">✦</span> TODAY'S SCRIPTURE <span class="verse-rule"></span></div>
+            <blockquote id="dailyVerse">“Trust in the LORD with all thine heart; and lean not unto thine own understanding.”</blockquote>
+            <div class="verse-footer"><span id="verseReference">PROVERBS 3:5 · KJV</span><button id="anotherVerseButton" class="text-button">Another verse ↗</button></div>
+          </section>
+
+          <div class="section-heading">
+            <div><p class="eyebrow">YOUR JOURNEY</p><h2>A little progress, every day.</h2></div>
+          </div>
+          <div class="stats-grid">
+            <article class="stat-card"><div class="stat-top"><span class="stat-icon icon-journal">▤</span><span class="stat-caption">ALL ENTRIES</span></div><strong id="totalCount">0</strong><p>Thoughts put into words</p></article>
+            <article class="stat-card"><div class="stat-top"><span class="stat-icon icon-prayer">✳</span><span class="stat-caption">TO PRAY FOR</span></div><strong id="requestCount">0</strong><p>Prayers still on your heart</p></article>
+            <article class="stat-card"><div class="stat-top"><span class="stat-icon icon-answered">✓</span><span class="stat-caption">ANSWERED</span></div><strong id="answeredCount">0</strong><p>Moments worth remembering</p></article>
+          </div>
+
+          <div class="section-heading recent-heading">
+            <div><p class="eyebrow">RECENT NOTES</p><h2>Your latest entries</h2></div>
+            <button class="text-button" data-go="journal">View journal ↗</button>
+          </div>
+          <div id="recentEntries" class="entry-grid"></div>
+          <div class="empty-state" id="overviewEmpty"><div class="empty-icon">✎</div><h3>Your journal starts here.</h3><p>Write down a prayer, a verse that stayed with you, or something you want to remember.</p><button class="secondary-button" data-new-entry>Write your first entry</button></div>
+        </section>
+
+        <section class="view-section" id="view-journal">
+          <div class="page-heading"><div><p class="eyebrow green-text">YOUR WORDS, YOUR SPACE</p><h1>My journal</h1><p class="subheading">A place for honest prayers and quiet reflections.</p></div><button class="primary-button" data-new-entry>＋ Write an entry</button></div>
+          <div class="toolbar">
+            <label class="search-box"><span>⌕</span><input id="searchInput" type="search" placeholder="Search your entries..." autocomplete="off"></label>
+            <select id="journalFilter" aria-label="Filter journal entries"><option value="all">All entries</option><option value="prayer">Personal prayers</option><option value="reflection">Reflections</option><option value="gratitude">Gratitude</option><option value="request">Prayer requests</option><option value="answered">Answered prayers</option></select>
+          </div>
+          <div class="entry-grid" id="journalEntries"></div>
+          <div class="empty-state" id="journalEmpty"><div class="empty-icon">▤</div><h3>Nothing here just yet.</h3><p>Your entries will appear here after you write your first one.</p><button class="secondary-button" data-new-entry>Write an entry</button></div>
+        </section>
+
+        <section class="view-section" id="view-requests">
+          <div class="page-heading"><div><p class="eyebrow green-text">KEEP THEM IN YOUR PRAYERS</p><h1>Prayer requests</h1><p class="subheading">Remember the people and things you are praying for.</p></div><button class="primary-button" data-new-request>＋ Add request</button></div>
+          <div class="entry-grid" id="requestEntries"></div>
+          <div class="empty-state" id="requestsEmpty"><div class="empty-icon">✳</div><h3>Keep a prayer close.</h3><p>Add a prayer request for yourself, family, friends, church, or anything on your heart.</p><button class="secondary-button" data-new-request>Add a prayer request</button></div>
+        </section>
+
+        <section class="view-section" id="view-answered">
+          <div class="page-heading"><div><p class="eyebrow green-text">REMEMBER HIS FAITHFULNESS</p><h1>Answered prayers</h1><p class="subheading">A record of gratitude, growth, and prayers answered in time.</p></div><button class="primary-button" data-new-entry>＋ Add a story</button></div>
+          <div class="entry-grid" id="answeredEntries"></div>
+          <div class="empty-state" id="answeredEmpty"><div class="empty-icon">✓</div><h3>Make room for gratitude.</h3><p>When a request is answered, mark it as answered and record what happened.</p><button class="secondary-button" data-go="requests">View prayer requests</button></div>
+        </section>
+
+        <footer class="footer"><span>STILLWORD <span class="footer-dot">·</span> A QUIET PLACE TO RETURN TO</span><span><span class="privacy-dot"></span> Your entries stay in this browser</span></footer>
+      </div>
+    </main>
+  </div>
+
+  <div class="modal-backdrop" id="entryModal" aria-hidden="true">
+    <section class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-header"><div><p class="eyebrow green-text" id="modalEyebrow">MAKE SOME SPACE</p><h2 id="modalTitle">New journal entry</h2></div><button class="icon-button close-modal" data-close-modal aria-label="Close">×</button></div>
+      <form id="entryForm">
+        <input type="hidden" id="entryId">
+        <label class="field-label" for="entryTitle">Title <span>REQUIRED</span></label>
+        <input class="field-control" id="entryTitle" maxlength="100" placeholder="Give this entry a name..." required>
+        <div class="form-row">
+          <div class="form-field"><label class="field-label" for="entryType">Entry type</label><select class="field-control" id="entryType"><option value="prayer">Personal prayer</option><option value="reflection">Reflection</option><option value="gratitude">Gratitude</option><option value="request">Prayer request</option><option value="answered">Answered prayer</option></select></div>
+          <div class="form-field"><label class="field-label" for="entryDate">Date</label><input class="field-control" id="entryDate" type="date" required></div>
+        </div>
+        <label class="field-label" for="entryContent">Your thoughts <span>TAKE YOUR TIME</span></label>
+        <textarea class="field-control content-input" id="entryContent" rows="8" placeholder="Write your prayer, reflection, or anything you want to remember..." required></textarea>
+        <label class="field-label" for="entryVerse">Verse or reference <span>OPTIONAL</span></label>
+        <input class="field-control" id="entryVerse" maxlength="160" placeholder="e.g. Psalm 23:1">
+        <div class="modal-actions"><button type="button" class="secondary-button" data-close-modal>Cancel</button><button type="submit" class="primary-button">Save entry <span>↗</span></button></div>
+      </form>
+    </section>
+  </div>
+
+  <div class="modal-backdrop" id="profileModal" aria-hidden="true">
+    <section class="modal-card small-modal" role="dialog" aria-modal="true" aria-labelledby="profileTitle">
+      <div class="modal-header"><div><p class="eyebrow green-text">MAKE IT YOURS</p><h2 id="profileTitle">Your journal</h2></div><button class="icon-button close-modal" data-close-modal>×</button></div>
+      <form id="profileForm"><label class="field-label" for="displayName">What should we call you?</label><input class="field-control" id="displayName" maxlength="35" placeholder="Your name"><div class="modal-actions"><button type="button" class="secondary-button" data-close-modal>Cancel</button><button type="submit" class="primary-button">Save name</button></div></form>
+    </section>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
